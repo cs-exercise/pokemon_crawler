@@ -1,0 +1,13 @@
+name: pokemon_crawler
+version: 0.1.0
+
+authors:
+  - Billy.Zheng <vil963@gmail.com>
+
+targets:
+  pokemon_crawler:
+    main: src/pokemon_crawler.cr
+
+crystal: '>= 1.13.2'
+
+license: MIT
