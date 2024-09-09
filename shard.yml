@@ -8,6 +8,13 @@ targets:
   pokemon_crawler:
     main: src/pokemon_crawler.cr
 
+dependencies:
+  lexbor:
+    github: kostya/lexbor
+
+sqlite3:
+    github: crystal-lang/crystal-sqlite3
+
 crystal: '>= 1.13.2'
 
 license: MIT
