@@ -1,3 +1,5 @@
+require "./pokemon_crawler/cli"
+
 # TODO: Write documentation for `PokemonCrawler`
 module PokemonCrawler
   VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}

@@ -11,8 +11,7 @@ targets:
 dependencies:
   lexbor:
     github: kostya/lexbor
-
-sqlite3:
+  sqlite3:
     github: crystal-lang/crystal-sqlite3
 
 crystal: '>= 1.13.2'
