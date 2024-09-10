@@ -1,7 +1,5 @@
 require "db"
 require "sqlite3"
-require "http/client"
-require "lexbor"
 require "./pokemon_crawler"
 
 start_idx = 1 # 爬取起始编号(最小支持编号：1)
@@ -14,7 +12,6 @@ end
 puts "\n开始爬取 #{start_idx} 到 #{end_idx} 号宝可梦数据...\n"
 
 url_numbers = (start_idx..end_idx).map { |e| sprintf("%04d", e) }
-
 IMAGE_DIR = "pokemon_images"
 Dir.exists?(IMAGE_DIR) || Dir.mkdir_p(IMAGE_DIR)
 
@@ -22,23 +19,24 @@ db_file = "sqlite3:./pokemon_images.db"
 
 PokemonCrawler.create_db(db_file)
 
-url_numbers.each do |url_number|
+def payload(url_number, db_file)
   record = PokemonCrawler.fetch_pokemon_data(url_number)
+  db = DB.open db_file
 
-  DB.connect db_file do |db|
-    db.exec(<<-'HEREDOC', *record
+  db.exec <<-'HEREDOC', *record
 INSERT INTO pokemon (
 number, name, subname, height, weight,
 sex, ability, classify, attribute, weakness,
 photo, photo_path
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 HEREDOC
-    )
-  rescue e : SQLite3::Exception
-    abort "Error creating table: #{e.message}"
-  ensure
-    db.close if db
-  end
+
+rescue e : SQLite3::Exception
+  abort "Error creating table: #{e.message}"
+ensure
+  db.close if db
 end
 
-# code end
+url_numbers.each do |url_number|
+  payload(url_number, db_file)
+end

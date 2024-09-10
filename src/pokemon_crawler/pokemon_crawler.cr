@@ -1,3 +1,6 @@
+require "http/client"
+require "lexbor"
+
 module PokemonCrawler
   extend self
 
