@@ -23,7 +23,8 @@ CONN = DB.open DB_FILE
 
 total_size = end_idx - start_idx
 worker_size = ENV.fetch("CRYSTAL_WORKERS", "8").to_i
-batch_size = 30
+batch_size = [(total_size // worker_size).to_i32, 500].min
+batches = (total_seeds // batch_size).to_i32
 batches = total_size // batch_size
 channel = Channel({Int32, Int32}).new(batches)
 wg = WaitGroup.new(worker_size)
